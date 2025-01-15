@@ -20,10 +20,10 @@ for mode in asan fuzz cmplog raw; do
     fi
    
     # Execute the current tool and gather its report
-    hdf5_afl/build.afl.$mode/bin/h5dump $f 1>/dev/null 2>$REPORT_FILE.h5dump
-    hdf5_afl/build.afl.$mode/bin/h5stat -F -g -G -d -D -T -A -s -S $f 1>/dev/null 2>$REPORT_FILE.h5stat
+    timeout 10 hdf5_afl/build.afl.$mode/bin/h5dump $f 1>/dev/null 2>$REPORT_FILE.h5dump
+    timeout 10 hdf5_afl/build.afl.$mode/bin/h5stat -F -g -G -d -D -T -A -s -S $f 1>/dev/null 2>$REPORT_FILE.h5stat
 #    ../build_$mode/hdf5/bin/h5copy -i $f -o /dev/null -f allflags -s "/" -d "/outdst" $f 2>$REPORT_FILE.h5copy
-    hdf5_afl/build.afl.$mode/bin/h5repack $f /dev/null 1>/dev/null 2>$REPORT_FILE.h5repack
+    timeout 10 hdf5_afl/build.afl.$mode/bin/h5repack $f /dev/null 1>/dev/null 2>$REPORT_FILE.h5repack
   done
 done
 

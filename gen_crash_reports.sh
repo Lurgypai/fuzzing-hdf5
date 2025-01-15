@@ -4,6 +4,8 @@ echo "targetbin = $1"
 echo "in_dir = $2"
 echo "out_dir = $3"
 
+hdf5_root=hdf5_afl
+
 #if [ ! -f "$1" ]; then
 #  echo "$1 does not exist."
 #  exit 1
@@ -24,23 +26,23 @@ for mode in asan fuzz cmplog raw; do
 
       case $1 in
         h5dump)
-  	  cmd="../develop/build_$mode/hdf5/bin/h5dump $file"
+  	  cmd="${hdf5_root}/build.afl.$mode/bin/h5dump $file"
           ;;
 
         h5stat)
-  	  cmd="../develop/build_$mode/hdf5/bin/h5stat -F -g -G -d -D -T -A -s -S $file"
+  	  cmd="${hdf5_root}/build.afl.$mode/bin/h5stat -F -g -G -d -D -T -A -s -S $file"
           ;;
 
         h5copy)
-  	  cmd="../develop/build_$mode/hdf5/bin/h5copy -i $file -o /dev/null -f allflags -s "/" -d "/outdst" $file"
+  	  cmd="${hdf5_root}/build.afl.$mode/bin/h5copy -i $file -o /dev/null -f allflags -s "/" -d "/outdst" $file"
           ;;
 
         h5repack)
-  	  cmd="../develop/build_$mode/hdf5/bin/h5repack $file /dev/null"
+  	  cmd="${hdf5_root}/build.afl.$mode/bin/h5repack $file /dev/null"
           ;;
 
         h5diff)
-  	  cmd="../develop/build_$mode/hdf5/bin/h5diff -r -c -v2 $file $file"
+  	  cmd="${hdf5_root}/build.afl.$mode/bin/h5diff -r -c -v2 $file $file"
           ;;
 
         *)
