@@ -15,6 +15,7 @@ RUN apt update && apt install -y \
     gnupg \
     zip \
     cmake \
+    vim \
     && apt clean
 
 # setup clang 16
@@ -32,7 +33,8 @@ RUN unzip models.zip \
     && rm models.zip
 
 # compile AFL++
-RUN git clone https://github.com/AFLplusplus/AFLplusplus.git
+# RUN git clone https://github.com/AFLplusplus/AFLplusplus.git
+RUN git clone https://github.com/cychen2021/AFLplusplus.git
 WORKDIR /workspace/AFLplusplus
 RUN make
 
