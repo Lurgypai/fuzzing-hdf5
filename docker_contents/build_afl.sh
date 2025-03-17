@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [[ -e /tmp/bb_record ]]; then
+    echo "bb_record for modified AFLplusplus exists, removing..."
+    rm /tmp/bb_record
+fi
+
+mkdir hdf5_out
+
 git clone https://github.com/hdfgroup/hdf5 hdf5_afl
 pushd hdf5_afl
 git checkout develop
@@ -13,8 +20,9 @@ cmake \
   -DCMAKE_C_COMPILER=afl-clang-fast \
   -DCMAKE_C_FLAGS="-g" \
   -DCMAKE_CXX_FLAGS="-g" \
+  -DCMAKE_INSTALL_PREFIX="/workspace/hdf5_out/asan" \
   ..
-make -j`nproc` $BINS
+make $BINS && make install
 unset AFL_USE_ASAN
 popd
 
@@ -28,8 +36,9 @@ cmake \
   -DCMAKE_C_COMPILER=afl-clang-fast \
   -DCMAKE_C_FLAGS="-g" \
   -DCMAKE_CXX_FLAGS="-g" \
+  -DCMAKE_INSTALL_PREFIX="/workspace/hdf5_out/msan" \
   ..
-make -j`nproc` $BINS
+make $BINS && make install
 unset AFL_USE_MSAN
 popd
 
@@ -40,8 +49,9 @@ cmake \
   -DCMAKE_C_COMPILER=afl-clang-fast \
   -DCMAKE_C_FLAGS="-g" \
   -DCMAKE_CXX_FLAGS="-g" \
+  -DCMAKE_INSTALL_PREFIX="/workspace/hdf5_out/cmplog" \
   ..
-make -j`nproc` $BINS
+make $BINS && make install
 unset AFL_LLVM_CMPLOG
 popd
 
@@ -52,8 +62,9 @@ cmake \
   -DCMAKE_C_COMPILER=afl-clang-fast \
   -DCMAKE_C_FLAGS="-g" \
   -DCMAKE_CXX_FLAGS="-g" \
+  -DCMAKE_INSTALL_PREFIX="/workspace/hdf5_out/raw" \
   ..
-make -j`nproc` $BINS
+make $BINS && make install
 popd
 
 mkdir build.cov
@@ -63,5 +74,5 @@ cmake \
   -DCMAKE_C_FLAGS="-g -fprofile-instr-generate -fcoverage-mapping" \
   -DCMAKE_CXX_FLAGS="-g -fprofile-instr-generate -fcoverage-mapping" \
   ..
-make -j`nproc`
+make $BINS
 popd

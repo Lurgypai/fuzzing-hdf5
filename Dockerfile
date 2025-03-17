@@ -31,6 +31,10 @@ COPY docker_contents/* /workspace/
 WORKDIR /workspace
 RUN unzip models.zip \
     && rm models.zip
+RUN unzip drivers.zip \
+    && rm drivers.zip
+RUN unzip summary.zip \
+    && rm summary.zip
 
 # compile AFL++
 # RUN git clone https://github.com/AFLplusplus/AFLplusplus.git
@@ -39,3 +43,10 @@ WORKDIR /workspace/AFLplusplus
 RUN make
 
 WORKDIR /workspace
+RUN mkdir /workspace/output
+
+ENV PATH="/workspace/AFLplusplus:$PATH"
+ENV AFL_PATH="/workspace/AFLplusplus"
+
+RUN /workspace/build_afl.sh > build.hdf5.log 2>&1
+RUN /workspace/build_fuzzers.sh
