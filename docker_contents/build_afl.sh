@@ -67,12 +67,12 @@ cmake \
 make $BINS && make install
 popd
 
-mkdir build.cov
-pushd build.cov
+mkdir build.gcc.cov
+pushd build.gcc.cov
 cmake \
-  -DCMAKE_C_COMPILER=clang \
-  -DCMAKE_C_FLAGS="-g -fprofile-instr-generate -fcoverage-mapping" \
-  -DCMAKE_CXX_FLAGS="-g -fprofile-instr-generate -fcoverage-mapping" \
+  -DCMAKE_C_COMPILER=gcc \
+  -DCMAKE_C_FLAGS="-fprofile-arcs -ftest-coverage" \
+  -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage" \
   ..
-make $BINS
+make $BINS -j`nproc`
 popd
