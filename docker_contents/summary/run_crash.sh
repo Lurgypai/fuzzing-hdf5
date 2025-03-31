@@ -9,7 +9,7 @@ echo "target_bin = $target_bin"
 echo "mode = $mode"
 echo "crash_file = $crash_file"
 
-hdf5_root=../hdf5_out/
+hdf5_root=../def_hdf5_out/
 
 #if [ ! -f "$1" ]; then
 #  echo "$1 does not exist."

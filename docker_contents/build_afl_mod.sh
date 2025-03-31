@@ -1,13 +1,13 @@
 #!/bin/bash
 
-. env.sh
+. env-mod.sh
 
 if [[ -e /tmp/bb_record ]]; then
     echo "bb_record for modified AFLplusplus exists, removing..."
     rm /tmp/bb_record
 fi
 
-mkdir def_hdf5_out
+mkdir mod_hdf5_out
 
 git clone https://github.com/hdfgroup/hdf5 hdf5_afl
 pushd hdf5_afl
@@ -24,10 +24,10 @@ cmake \
   -DCMAKE_C_COMPILER=afl-clang-fast \
   -DCMAKE_C_FLAGS="-g" \
   -DCMAKE_CXX_FLAGS="-g" \
-  -DCMAKE_INSTALL_PREFIX="/workspace/def_hdf5_out/asan" \
+  -DCMAKE_INSTALL_PREFIX="/workspace/mod_hdf5_out/asan" \
   -DHDF5_ENABLE_ASSERTS=Off \
   ..
-make $BINS -j`nproc` && make install
+make $BINS && make install
 unset AFL_USE_ASAN
 popd
 
@@ -41,10 +41,10 @@ cmake \
   -DCMAKE_C_COMPILER=afl-clang-fast \
   -DCMAKE_C_FLAGS="-g" \
   -DCMAKE_CXX_FLAGS="-g" \
-  -DCMAKE_INSTALL_PREFIX="/workspace/def_hdf5_out/msan" \
+  -DCMAKE_INSTALL_PREFIX="/workspace/mod_hdf5_out/msan" \
   -DHDF5_ENABLE_ASSERTS=Off \
   ..
-make $BINS -j`nproc` && make install
+make $BINS && make install
 unset AFL_USE_MSAN
 popd
 
@@ -55,10 +55,10 @@ cmake \
   -DCMAKE_C_COMPILER=afl-clang-fast \
   -DCMAKE_C_FLAGS="-g" \
   -DCMAKE_CXX_FLAGS="-g" \
-  -DCMAKE_INSTALL_PREFIX="/workspace/def_hdf5_out/cmplog" \
+  -DCMAKE_INSTALL_PREFIX="/workspace/mod_hdf5_out/cmplog" \
   -DHDF5_ENABLE_ASSERTS=Off \
   ..
-make $BINS -j`nproc` && make install
+make $BINS && make install
 unset AFL_LLVM_CMPLOG
 popd
 
@@ -69,10 +69,10 @@ cmake \
   -DCMAKE_C_COMPILER=afl-clang-fast \
   -DCMAKE_C_FLAGS="-g" \
   -DCMAKE_CXX_FLAGS="-g" \
-  -DCMAKE_INSTALL_PREFIX="/workspace/def_hdf5_out/raw" \
+  -DCMAKE_INSTALL_PREFIX="/workspace/mod_hdf5_out/raw" \
   -DHDF5_ENABLE_ASSERTS=Off \
   ..
-make $BINS -j`nproc` && make install
+make $BINS && make install
 popd
 
 mkdir build.gcc.cov
@@ -81,7 +81,7 @@ cmake \
   -DCMAKE_C_COMPILER=gcc \
   -DCMAKE_C_FLAGS="-fprofile-arcs -ftest-coverage" \
   -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage" \
-  -DCMAKE_INSTALL_PREFIX="/workspace/def_hdf5_out/cov" \
+  -DCMAKE_INSTALL_PREFIX="/workspace/mod_hdf5_out/cov" \
   -DHDF5_ENABLE_ASSERTS=Off \
   ..
 make $BINS -j`nproc` && make install

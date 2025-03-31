@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ -z $AFL_PATH ]]; then
+    echo "AFL_PATH is not set, did you source the environment?"
+    exit
+fi
+
 # Output directory is a command-line parameter
 OUTPUT=$1
 

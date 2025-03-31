@@ -21,6 +21,8 @@ RUN apt update && apt install -y \
     gdb \
     lcov \
     python2 \
+    zlib1g-dev \
+    libaec-dev \
     && apt clean
 
 # setup clang 16
@@ -52,8 +54,11 @@ RUN git clone https://github.com/mrash/afl-cov.git
 
 RUN mkdir /workspace/output
 
-ENV PATH="/workspace/AFLplusplus-mod:$PATH"
-ENV AFL_PATH="/workspace/AFLplusplus-mod"
+ENV DEFAULT_PATH="$PATH"
 
+#compile hdf5 with default afl
 RUN /workspace/build_afl.sh > build.hdf5.log 2>&1
-RUN /workspace/build_fuzzers.sh
+
+# compile fuzzers and hdf5 with modified afl
+# RUN /workspace/build_afl_mod.sh > build-mod.hdf5.log 2>&1
+# RUN /workspace/build_fuzzers.sh

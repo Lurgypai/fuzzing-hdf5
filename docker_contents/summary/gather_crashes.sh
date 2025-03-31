@@ -1,7 +1,7 @@
 #!/bin/bash
 
 OUTDIR=$1
-HDF5_DIR=../hdf5_out
+HDF5_DIR=../def_hdf5_out
 REPORTS_DIR=$2
 
 if [ ! $OUTDIR ]; then
