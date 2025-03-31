@@ -86,3 +86,13 @@ cmake \
   ..
 make $BINS -j`nproc` && make install
 popd
+
+mkdir build.gcc
+pushd build.gcc
+cmake \
+  -DCMAKE_C_COMPILER=gcc \
+  -DCMAKE_INSTALL_PREFIX="/workspace/def_hdf5_out/gcc" \
+  -DHDF5_ENABLE_ASSERTS=Off \
+  ..
+make $BINS -j`nproc` && make install
+popd
